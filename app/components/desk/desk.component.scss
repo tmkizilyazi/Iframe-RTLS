@@ -1,0 +1,263 @@
+/* Genel Sayfa & Layout */
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    transition: margin-left 0.3s;
+  }
+  /* Toggle butonu (sol üst köşe) */
+  .toggle-sidebar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background: #34495e;
+    color: #ecf0f1;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s;
+  }
+  .toggle-sidebar:hover {
+    background: #1abc9c;
+  }
+  /* Sol menü (sidebar) */
+  .sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    transition: width 0.3s, opacity 0.3s;
+  }
+  .sidebar.closed {
+    width: 0;
+    opacity: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  .sidebar h3 {
+    margin: 0 0 20px;
+    text-align: center;
+    font-size: 1.2em;
+  }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar ul li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #34495e;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .sidebar ul li.selected {
+    background: #1abc9c;
+  }
+  .sidebar ul li:hover {
+    background: #16a085;
+  }
+  .shape-preview {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border: 1px solid #bdc3c7;
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+  }
+  /* Sağ panel (dashboard) */
+  .dashboard {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .control-panel {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .control-panel h2 {
+    margin: 0 0 15px;
+    color: #2c3e50;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .control-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #27ae60;
+    color: #fff;
+    transition: all 0.3s;
+  }
+  .control-btn:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .three-d-toggle {
+    background: #2980b9;
+  }
+  .size-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #2c3e50;
+  }
+  .size-controls input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+  }
+  .stats {
+    display: flex;
+    gap: 30px;
+    padding: 10px;
+    background: #bdc3c7;
+    border-radius: 5px;
+    justify-content: center;
+  }
+  .stat-item {
+    font-size: 1em;
+    color: #2c3e50;
+  }
+  /* Çalışma alanı */
+  .workspace {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: #ecf0f1;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: auto;
+  }
+  /* 3D görünüm için perspektif kapsayıcı */
+  .perspective-container.three-d-mode {
+    perspective: 1200px;
+  }
+  /* Masa düzeni */
+  .desk-layout {
+    position: relative;
+    background: #dfe6e9;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 0.5s ease;
+  }
+  /* 3D modda masa düzenine ek dönüşüm */
+  .desk-layout.three-d-mode {
+    transform: rotateX(30deg) rotateY(20deg) scale(0.95);
+  }
+  .grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+  .table {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    /* Her zaman wood-texture.jpg */
+    background: url('/images/wood-texture.jpg') no-repeat center center;
+    background-size: cover;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+    border-radius: 10px;
+  }
+  /* Sensör/Koltuk stilleri */
+  .seat {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    cursor: move;
+    user-select: none;
+    transition: transform 0.2s;
+  }
+  .seat-info {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .seat:hover .seat-info {
+    opacity: 1;
+  }
+  .delete-btn {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  /* Modern, metallic sensör/koltuk */
+  .seat-icon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #b0b0b0, #707070);
+    border-radius: 10px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+  }
+  .status {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .status.active {
+    background: rgba(231, 76, 60, 0.9);
+  }
+  .battery-indicator.low {
+    color: #e74c3c;
+  }
+  .signal-indicator i, .battery-indicator i {
+    font-size: 14px;
+  }

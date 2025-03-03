@@ -1,0 +1,93 @@
+<!-- Üst kısımda sol menüyü aç/kapatmak için toggle butonu -->
+<button class="toggle-sidebar" (click)="toggleSidebar()">☰</button>
+
+<div class="layout-container">
+  <!-- Sol menü: açılıp kapanabilir -->
+  <div class="sidebar" [class.closed]="!isSidebarOpen">
+    <h3>Masa Şekilleri</h3>
+    <ul>
+      <li *ngFor="let shape of tableShapes"
+          [class.selected]="shape.id === selectedShape?.id"
+          (click)="selectShape(shape)">
+        <div class="shape-preview" [ngStyle]="getShapePreviewStyle(shape)"></div>
+        <span>{{ shape.name }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Sağ panel -->
+  <div class="dashboard">
+    <div class="control-panel">
+      <h2>RTLS Masa Kontrol Paneli</h2>
+      <div class="controls">
+        <button (click)="addSeat()" class="control-btn add">
+          <i class="fas fa-plus"></i> Sensör Ekle
+        </button>
+        <div class="size-controls">
+          <label>
+            <span>Genişlik:</span>
+            <input type="number" [(ngModel)]="tableWidth" (change)="updateTable()" min="400" max="1200" step="50">
+          </label>
+          <label>
+            <span>Uzunluk:</span>
+            <input type="number" [(ngModel)]="tableLength" (change)="updateTable()" min="300" max="800" step="50">
+          </label>
+        </div>
+        <!-- 3D View toggle butonu -->
+        <button (click)="toggle3DView()" class="control-btn three-d-toggle">
+          3D View: {{ is3D ? 'On' : 'Off' }}
+        </button>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <span>Toplam Sensör:</span>
+          <strong>{{ seats.length }}</strong>
+        </div>
+        <div class="stat-item">
+          <span>Aktif Sensör:</span>
+          <strong>{{ getActiveSeats() }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="workspace">
+      <!-- 3D görünüm için perspektif kapsayıcı -->
+      <div class="perspective-container" [ngClass]="{'three-d-mode': is3D}">
+        <div class="desk-layout" [style.width.px]="tableWidth" [style.height.px]="tableLength" [ngClass]="{'three-d-mode': is3D}">
+          <div class="grid-overlay"></div>
+          <!-- Masa yüzeyi: Her zaman wood-texture.jpg kullanılır -->
+          <div class="table" [ngStyle]="getTableStyles()"></div>
+          <!-- Sensör/koltuk elemanları -->
+          <div *ngFor="let seat of seats; trackBy: trackBySeat"
+               class="seat"
+               [class.occupied]="seat.isOccupied"
+               [class.dragging]="draggedSeat?.id === seat.id"
+               [style.transform]="getSeatTransform(seat)"
+               (mousedown)="startDrag($event, seat)"
+               (contextmenu)="rotateSeat($event, seat)">
+            <div class="seat-info" (click)="$event.stopPropagation()">
+              <div class="sensor-id">ID: {{ seat.id }}</div>
+              <div *ngIf="seat.signalStrength !== undefined"
+                   class="signal-indicator"
+                   [style.opacity]="getSeatSignalOpacity(seat)">
+                <i class="fas fa-signal"></i>
+              </div>
+              <div *ngIf="seat.batteryLevel !== undefined"
+                   class="battery-indicator" [class.low]="isBatteryLow(seat)">
+                <i class="fas fa-battery-half"></i>
+              </div>
+              <button class="delete-btn" (click)="deleteSeat(seat, $event)">&#x2715;</button>
+            </div>
+            <!-- Modern, metallic görünümlü sensör/koltuk -->
+            <div class="seat-icon"></div>
+            <div class="status" [class.active]="seat.isOccupied">
+              {{ seat.isOccupied ? 'Dolu' : 'Boş' }}
+              <span *ngIf="seat.lastUpdate" class="timestamp">
+                {{ seat.lastUpdate | date:'HH:mm:ss' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
